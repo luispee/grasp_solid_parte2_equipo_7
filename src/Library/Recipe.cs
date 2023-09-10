@@ -6,12 +6,14 @@
 
 using System;
 using System.Collections;
+using System.Net.NetworkInformation;
 
 namespace Full_GRASP_And_SOLID.Library
 {
     public class Recipe
     {
-        private ArrayList steps = new ArrayList();
+        //public para que ConsolePrinter pueda acceder
+        public ArrayList steps = new ArrayList();
 
         public Product FinalProduct { get; set; }
 
@@ -24,15 +26,16 @@ namespace Full_GRASP_And_SOLID.Library
         {
             this.steps.Remove(step);
         }
-
-        public void PrintRecipe()
-        {
-            Console.WriteLine($"Receta de {this.FinalProduct.Description}:");
-            foreach (Step step in this.steps)
+        public double TotalCost { get 
             {
-                Console.WriteLine($"{step.Quantity} de '{step.Input.Description}' " +
-                    $"usando '{step.Equipment.Description}' durante {step.Time}");
-            }
+                double totalCost = 0;
+                foreach (Step step in this.steps)
+                {
+                    totalCost += step.GetProductionCost(step);
+                }
+                return totalCost;
+            } 
         }
+
     }
 }
